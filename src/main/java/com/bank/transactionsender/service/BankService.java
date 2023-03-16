@@ -135,6 +135,28 @@ public class BankService {
         return dbResponse;
     }
 
+    public double getFeeRate() {
+
+        try {
+            CriteriaDefinition criteria = new Criteria().andOperator(
+                    Criteria.where("_id").is(Constants.BANK_TRANSFER_RATE));
+
+            Query query = new Query(criteria);
+            query.fields().include(Constants.VALUE_SEQUENCE);
+
+
+            Map dbResponse = mongoTemplate.findOne(query, Map.class, Constants.CATALOG_COLLECTION);
+
+            if(dbResponse == null || dbResponse.get(Constants.VALUE_SEQUENCE) == null){
+                return -1.0;
+            }
+            logger.info("Rate: {}", dbResponse);
+            return Double.valueOf(dbResponse.get(Constants.VALUE_SEQUENCE).toString());
+        } catch (Exception ex) {
+            logger.error("Exception: ", ex);
+            return -1.0;
+        }
+    }
     public Map<String, Object> getBankData(Map<String, Object> request) {
         Map<String, Object> bankData = new HashMap<>();
         Map<String, Object> accountData = new HashMap<>();

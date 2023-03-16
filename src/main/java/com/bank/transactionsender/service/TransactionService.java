@@ -88,8 +88,14 @@ public class TransactionService {
                             logger.info("source transaction: {}", response);
 
                             if (response.getSuccess()) {
-                                response = walletService.sendTransaction(destinationUser, amount);
-                                logger.info("destination transaction: {}", response);
+                                double feeRate = bankService.getFeeRate();
+                                if(feeRate > 0) {
+                                    response = walletService.sendTransaction(destinationUser, (int) (amount * (1-feeRate)));
+                                    logger.info("destination transaction: {}", response);
+                                } else{
+                                    response.setSuccess(false);
+                                    response.setMessage("failed to get fee rate");
+                                }
 
                                 //If the second transaction failed, the first its reversed
                                 if (!response.getSuccess()) {

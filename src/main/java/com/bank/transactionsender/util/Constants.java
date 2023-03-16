@@ -28,6 +28,7 @@ public class Constants {
     public final static String BANK_ACCOUNT_NUMBER = "accountNumber";
     public final static String BANK_ACCOUNT_CURRENCY = "currency";
     public final static String BANK_SOURCE_INFORMATION = "sourceInformation";
+    public final static String BANK_TRANSFER_RATE = "feeRate";
 
     //Payment
     public final static String PAYMENT_SOURCE = "source";
