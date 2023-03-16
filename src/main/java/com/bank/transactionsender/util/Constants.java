@@ -32,10 +32,17 @@ public class Constants {
 
     //Payment
     public final static String PAYMENT_SOURCE = "source";
-    public final static String PAYMENT_destination = "destination";
+    public final static String PAYMENT_DESTINATION = "destination";
     public final static String PAYMENT_AMOUNT = "amount";
     public final static String PAYMENT_USER_IDENTIFIER = "user_id";
 
+    //Transaction
+    public final static String TRANSACTION_PAYMENT = "payment";
+    public final static String TRANSACTION_PAYMENT_INFO = "paymentInfo";
+    public final static String TRANSACTION_REQUEST_INFO = "requestInfo";
+    public final static String TRANSACTION_REVERSE = "reverse";
+    public final static String TRANSACTION_AMOUNT_PATH = "payment.amount";
+    public final static String TRANSACTION_DATE_PATH = "payment.creationDate";
     //Server
     public final static String SERVER_ERROR_MESSAGE_PATH = "$.requestInfo.error";
     public final static String SERVER_MESSAGE_PATH = "$.message";

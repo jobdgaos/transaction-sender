@@ -11,15 +11,15 @@ import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
 import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class TransactionService {
@@ -42,6 +42,8 @@ public class TransactionService {
 
     public ResponseEntity createPayment(Map<String, Object> request) {
         BaseResponse response;
+        Map<String, Object> transactionRequest = new HashMap<>();
+
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
@@ -88,11 +90,14 @@ public class TransactionService {
                             logger.info("source transaction: {}", response);
 
                             if (response.getSuccess()) {
+                                //Set source transaction data
+                                transactionRequest.put(Constants.PAYMENT_SOURCE, response.getData());
+
                                 double feeRate = bankService.getFeeRate();
-                                if(feeRate > 0) {
-                                    response = walletService.sendTransaction(destinationUser, (int) (amount * (1-feeRate)));
+                                if (feeRate > 0) {
+                                    response = walletService.sendTransaction(destinationUser, (int) (amount * (1 - feeRate)));
                                     logger.info("destination transaction: {}", response);
-                                } else{
+                                } else {
                                     response.setSuccess(false);
                                     response.setMessage("failed to get fee rate");
                                 }
@@ -101,10 +106,20 @@ public class TransactionService {
                                 if (!response.getSuccess()) {
                                     response = walletService.sendTransaction(sourceUser, amount);
                                     logger.info("reverse transaction: {}", response);
+
+                                    //Set reverse transaction data
+                                    transactionRequest.put(Constants.TRANSACTION_REVERSE, response.getData());
+                                } else {
+                                    //Set destination transaction data
+                                    transactionRequest.put(Constants.PAYMENT_DESTINATION, response.getData());
                                 }
                             }
-                            //Save all the data
-                            logger.info("paymentResponse: {}", paymentResponse);
+
+                            transactionRequest.put(Constants.TRANSACTION_PAYMENT, this.getPaymentData(paymentResponse.getBody()));
+
+                            logger.info("transactionRequest: {}", transactionRequest);
+
+                            mongoTemplate.save(transactionRequest, Constants.TRANSACTION_COLLECTION);
                         }
                     }
                 }
@@ -128,7 +143,7 @@ public class TransactionService {
 
         }
 
-        return new ResponseEntity("Payment created successfully", HttpStatus.OK);
+        return new ResponseEntity("Payment completed successfully", HttpStatus.OK);
     }
 
     public BaseResponse validateRequest(Map<String, Object> request) {
@@ -138,8 +153,8 @@ public class TransactionService {
         if (!request.containsKey(Constants.PAYMENT_SOURCE)) {
             errorDetail.add(Constants.PAYMENT_SOURCE + " is mandatory.");
         }
-        if (!request.containsKey(Constants.PAYMENT_destination)) {
-            errorDetail.add(Constants.PAYMENT_destination + " is mandatory.");
+        if (!request.containsKey(Constants.PAYMENT_DESTINATION)) {
+            errorDetail.add(Constants.PAYMENT_DESTINATION + " is mandatory.");
         }
         if (!request.containsKey(Constants.PAYMENT_AMOUNT)) {
             errorDetail.add(Constants.PAYMENT_AMOUNT + " is mandatory.");
@@ -159,8 +174,99 @@ public class TransactionService {
         return response;
     }
 
+    public Map<String, Object> getPaymentData(Map<String, Object> paymentResponse) {
+        Map<String, Object> paymentInfo = new HashMap<>((Map) paymentResponse.get(Constants.TRANSACTION_PAYMENT_INFO));
+        Map<String, Object> requestInfo = new HashMap<>((Map) paymentResponse.get(Constants.TRANSACTION_REQUEST_INFO));
+
+        paymentInfo.put("status", requestInfo.get("status"));
+        paymentInfo.put("creationDate", new Date());
+
+        return paymentInfo;
+    }
+
     public void cleanRequest(Map<String, Object> request) {
         request.remove(Constants.BANK_IDENTIFIER);
         request.remove(Constants.USER_IDENTIFIER);
+    }
+
+    public ResponseEntity<BaseResponse> getTransactionList(Optional<Date> minDate, Optional<Date> maxDate,
+                                                           Optional<Integer> minAmount, Optional<Integer> maxAmount,
+                                                           Optional<Integer> currentPage, Optional<Integer> pageSize) {
+        ResponseEntity responseEntity;
+        BaseResponse response = new BaseResponse();
+        Query query;
+        List<Criteria> criteriaList = new ArrayList<>();
+        Map<String, Object> responseList = new HashMap<>();
+
+        if (pageSize.isEmpty()) {
+            response.setSuccess(false);
+            response.setMessage("Page size parameter is mandatory");
+            responseEntity = new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+        } else {
+
+            if (minAmount.isPresent()) {
+                criteriaList.add(Criteria.where(Constants.TRANSACTION_AMOUNT_PATH).gte(minAmount.get()));
+            }
+
+            if (maxAmount.isPresent()) {
+                criteriaList.add(Criteria.where(Constants.TRANSACTION_AMOUNT_PATH).lte(maxAmount.get()));
+            }
+
+            if (minDate.isPresent()) {
+                criteriaList.add(Criteria.where(Constants.TRANSACTION_DATE_PATH).gte(minDate.get()));
+            }
+
+            if (maxDate.isPresent()) {
+                criteriaList.add(Criteria.where(Constants.TRANSACTION_DATE_PATH).lte(maxDate.get()));
+            }
+
+
+            if (!criteriaList.isEmpty()) {
+                Criteria criteria = new Criteria().andOperator(criteriaList);
+                query = new Query(criteria);
+            } else {
+                query = new Query();
+            }
+
+            query.fields().exclude("_id");
+
+
+            Long transactionCount = mongoTemplate.count(query, Constants.TRANSACTION_COLLECTION);
+
+            int maxPages = (int) Math.ceil((transactionCount / pageSize.get()) + 0.5);
+
+            if (currentPage.isEmpty() || currentPage.get() <= 0) {
+                currentPage = Optional.of(1);
+            }
+
+            if (currentPage.get() > maxPages) {
+                currentPage = Optional.of(maxPages);
+            }
+
+            query.skip((currentPage.get() - 1) * pageSize.get());
+            query.limit(pageSize.get());
+
+            query.with(Sort.by(Sort.Direction.DESC, Constants.TRANSACTION_DATE_PATH));
+
+            List<Map> transactionList = mongoTemplate.find(query, Map.class, Constants.TRANSACTION_COLLECTION);
+
+            logger.info("Count: {}", transactionCount);
+            logger.info("maxPage: {}", maxPages);
+            logger.info("currentPage: {}", currentPage.get());
+            logger.info("pageListCount: {}", transactionList.size());
+
+            responseList.put("total", transactionCount);
+            responseList.put("maxPages", maxPages);
+            responseList.put("currentPage", currentPage.get());
+            responseList.put("pageList", transactionList);
+
+
+            response.setSuccess(true);
+            response.setMessage("Transaction list");
+            response.setData(responseList);
+            responseEntity = new ResponseEntity(response, HttpStatus.OK);
+        }
+
+        return responseEntity;
     }
 }

@@ -20,11 +20,9 @@ import java.util.Map;
 public class WalletService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final MongoTemplate mongoTemplate;
     private final ProviderFeign providerFeign;
 
-    public WalletService(MongoTemplate mongoTemplate, ProviderFeign providerFeign) {
-        this.mongoTemplate = mongoTemplate;
+    public WalletService(ProviderFeign providerFeign) {
         this.providerFeign = providerFeign;
     }
 
@@ -38,6 +36,7 @@ public class WalletService {
             response.setData(balanceResponse);
 
         } catch (FeignException fex) {
+            logger.error("Feign exception", fex);
             response.setSuccess(false);
             response.setMessage("Code: " + fex.status() + " - Error while getting user balance");
         } catch (Exception ex) {

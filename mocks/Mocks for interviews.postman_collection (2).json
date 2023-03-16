@@ -1,0 +1,895 @@
+{
+	"info": {
+		"_postman_id": "305a6c8f-acb9-4d98-b16d-0a80d07bb3a3",
+		"name": "Mocks for interviews",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19561259"
+	},
+	"item": [
+		{
+			"name": "Create wallet transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": 2000,\n    \"user_id\": 1000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://mockoon.tools.getontop.com:3000/wallets/transactions",
+					"protocol": "http",
+					"host": [
+						"mockoon",
+						"tools",
+						"getontop",
+						"com"
+					],
+					"port": "3000",
+					"path": [
+						"wallets",
+						"transactions"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 topup",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 2000,\n    \"user_id\": 1000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://mockoon.tools.getontop.com:3000/wallets/transactions",
+							"protocol": "http",
+							"host": [
+								"mockoon",
+								"tools",
+								"getontop",
+								"com"
+							],
+							"port": "3000",
+							"path": [
+								"wallets",
+								"transactions"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "73"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 03 Mar 2023 14:27:43 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"wallet_transaction_id\": 66319,\n    \"amount\": 2000,\n    \"user_id\": 1000\n}"
+				},
+				{
+					"name": "200 withdraw",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": -2300,\n    \"user_id\": 1000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://mockoon.tools.getontop.com:3000/wallets/transactions",
+							"protocol": "http",
+							"host": [
+								"mockoon",
+								"tools",
+								"getontop",
+								"com"
+							],
+							"port": "3000",
+							"path": [
+								"wallets",
+								"transactions"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "74"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 03 Mar 2023 14:28:36 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"wallet_transaction_id\": 59974,\n    \"amount\": -2300,\n    \"user_id\": 1000\n}"
+				},
+				{
+					"name": "400",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 2000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://mockoon.tools.getontop.com:3000/wallets/transactions",
+							"protocol": "http",
+							"host": [
+								"mockoon",
+								"tools",
+								"getontop",
+								"com"
+							],
+							"port": "3000",
+							"path": [
+								"wallets",
+								"transactions"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "80"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 03 Mar 2023 14:29:45 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"code\": \"INVALID_BODY\",\n    \"message\": \"amount and user_id must not be null\"\n}"
+				},
+				{
+					"name": "404 (obtained when user_id is 404)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 2000,\n    \"user_id\": 404\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://mockoon.tools.getontop.com:3000/wallets/transactions",
+							"protocol": "http",
+							"host": [
+								"mockoon",
+								"tools",
+								"getontop",
+								"com"
+							],
+							"port": "3000",
+							"path": [
+								"wallets",
+								"transactions"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "59"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 03 Mar 2023 14:30:15 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"code\": \"INVALID_USER\",\n    \"message\": \"user not found\"\n}"
+				},
+				{
+					"name": "500 (obtained when user_id is 500)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 2000,\n    \"user_id\": 500\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://mockoon.tools.getontop.com:3000/wallets/transactions",
+							"protocol": "http",
+							"host": [
+								"mockoon",
+								"tools",
+								"getontop",
+								"com"
+							],
+							"port": "3000",
+							"path": [
+								"wallets",
+								"transactions"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "68"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 03 Mar 2023 14:30:47 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"code\": \"GENERIC_ERROR\",\n    \"message\": \"something bad happened\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Create payment in provider",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"source\": {\n        \"type\": \"COMPANY\",\n        \"sourceInformation\": {\n            \"name\": \"ONTOP INC\"\n        },\n        \"account\": {\n            \"accountNumber\": \"0245253419\",\n            \"currency\": \"USD\",\n            \"routingNumber\": \"028444018\"\n        }\n    },\n    \"destination\": {\n        \"name\": \"TONY STARK\",\n        \"account\": {\n            \"accountNumber\": \"1885226711\",\n            \"currency\": \"USD\",\n            \"routingNumber\": \"211927207\"\n        }\n    },\n    \"amount\": 1000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://mockoon.tools.getontop.com:3000/api/v1/payments",
+					"protocol": "http",
+					"host": [
+						"mockoon",
+						"tools",
+						"getontop",
+						"com"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"payments"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"source\": {\n        \"type\": \"COMPANY\",\n        \"sourceInformation\": {\n            \"name\": \"ONTOP INC\"\n        },\n        \"account\": {\n            \"accountNumber\": \"0245253419\",\n            \"currency\": \"USD\",\n            \"routingNumber\": \"028444018\"\n        }\n    },\n    \"destination\": {\n        \"name\": \"TONY STARK\",\n        \"account\": {\n            \"accountNumber\": \"1885226711\",\n            \"currency\": \"USD\",\n            \"routingNumber\": \"211927207\"\n        }\n    },\n    \"amount\": 1000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://mockoon.tools.getontop.com:3000/api/v1/payments",
+							"protocol": "http",
+							"host": [
+								"mockoon",
+								"tools",
+								"getontop",
+								"com"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"payments"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "146"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 03 Mar 2023 14:31:28 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"requestInfo\": {\n        \"status\": \"Processing\"\n    },\n    \"paymentInfo\": {\n        \"amount\": 1000,\n        \"id\": \"70cfe468-91b9-4e04-8910-5e8257dfadfa\"\n    }\n}"
+				},
+				{
+					"name": "400",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"source\": {\n        \"type\": \"COMPANY\",\n        \"sourceInformation\": {\n            \"name\": \"ONTOP INC\"\n        },\n        \"account\": {\n            \"accountNumber\": \"0245253419\",\n            \"currency\": \"USD\",\n            \"routingNumber\": \"028444018\"\n        }\n    },\n    \"destination\": {\n        \"name\": \"TONY STARK\",\n        \"account\": {\n            \"currency\": \"USD\",\n            \"routingNumber\": \"211927207\"\n        }\n    },\n    \"amount\": 1000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://mockoon.tools.getontop.com:3000/api/v1/payments",
+							"protocol": "http",
+							"host": [
+								"mockoon",
+								"tools",
+								"getontop",
+								"com"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"payments"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "66"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 03 Mar 2023 14:32:03 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"body is invalid, check postman collection example\"\n}"
+				},
+				{
+					"name": "500 (with destination name JAMES FAILED)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"source\": {\n        \"type\": \"COMPANY\",\n        \"sourceInformation\": {\n            \"name\": \"ONTOP INC\"\n        },\n        \"account\": {\n            \"accountNumber\": \"0245253419\",\n            \"currency\": \"USD\",\n            \"routingNumber\": \"028444018\"\n        }\n    },\n    \"destination\": {\n        \"name\": \"JAMES FAILED\",\n        \"account\": {\n            \"accountNumber\": \"1885226711\",\n            \"currency\": \"USD\",\n            \"routingNumber\": \"211927207\"\n        }\n    },\n    \"amount\": 1000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://mockoon.tools.getontop.com:3000/api/v1/payments",
+							"protocol": "http",
+							"host": [
+								"mockoon",
+								"tools",
+								"getontop",
+								"com"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"payments"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "180"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 21 Feb 2023 10:17:48 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"requestInfo\": {\n        \"status\": \"Failed\",\n        \"error\": \"bank rejected payment\"\n    },\n    \"paymentInfo\": {\n        \"amount\": 1000,\n        \"id\": \"7633f4c9-51e4-4b62-97b0-51156966f1d7\"\n    }\n}"
+				},
+				{
+					"name": "500 timeout (with destination name JAMES TIMEOUT)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"source\": {\n        \"type\": \"COMPANY\",\n        \"sourceInformation\": {\n            \"name\": \"ONTOP INC\"\n        },\n        \"account\": {\n            \"accountNumber\": \"0245253419\",\n            \"currency\": \"USD\",\n            \"routingNumber\": \"028444018\"\n        }\n    },\n    \"destination\": {\n        \"name\": \"JAMES TIMEOUT\",\n        \"account\": {\n            \"accountNumber\": \"1885226711\",\n            \"currency\": \"USD\",\n            \"routingNumber\": \"211927207\"\n        }\n    },\n    \"amount\": 1000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://mockoon.tools.getontop.com:3000/api/v1/payments",
+							"protocol": "http",
+							"host": [
+								"mockoon",
+								"tools",
+								"getontop",
+								"com"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"payments"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "166"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 21 Feb 2023 10:19:13 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"requestInfo\": {\n        \"status\": \"Failed\",\n        \"error\": \"timeout\"\n    },\n    \"paymentInfo\": {\n        \"amount\": 1000,\n        \"id\": \"3656ee8e-caff-4f2b-9ed3-2ba9fb938fb7\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Balance",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://mockoon.tools.getontop.com:3000/wallets/balance?user_id=1000",
+					"protocol": "http",
+					"host": [
+						"mockoon",
+						"tools",
+						"getontop",
+						"com"
+					],
+					"port": "3000",
+					"path": [
+						"wallets",
+						"balance"
+					],
+					"query": [
+						{
+							"key": "user_id",
+							"value": "1000"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://mockoon.tools.getontop.com:3000/wallets/balance?user_id=1000",
+							"protocol": "http",
+							"host": [
+								"mockoon",
+								"tools",
+								"getontop",
+								"com"
+							],
+							"port": "3000",
+							"path": [
+								"wallets",
+								"balance"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "1000"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "40"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 21 Feb 2023 08:59:06 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"balance\": 2500,\n    \"user_id\": 1000\n}"
+				}
+			]
+		},
+		{
+			"name": "Payment in provider status (random status on each request)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://mockoon.tools.getontop.com:3000/api/v1/payments/:paymentId/status",
+					"protocol": "http",
+					"host": [
+						"mockoon",
+						"tools",
+						"getontop",
+						"com"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"payments",
+						":paymentId",
+						"status"
+					],
+					"variable": [
+						{
+							"key": "paymentId",
+							"value": "20526035-aca0-4e5f-9661-57aff7461603"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Failed",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://mockoon.tools.getontop.com:3000/api/v1/payments/:paymentId/status",
+							"protocol": "http",
+							"host": [
+								"mockoon",
+								"tools",
+								"getontop",
+								"com"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								":paymentId",
+								"status"
+							],
+							"variable": [
+								{
+									"key": "paymentId",
+									"value": "20526035-aca0-4e5f-9661-57aff7461603"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "57"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 21 Feb 2023 10:33:55 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"Failed\",\n    \"date\": \"02/21/2023 07:33:55\"\n}"
+				},
+				{
+					"name": "Completed",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://mockoon.tools.getontop.com:3000/api/v1/payments/:paymentId/status",
+							"protocol": "http",
+							"host": [
+								"mockoon",
+								"tools",
+								"getontop",
+								"com"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								":paymentId",
+								"status"
+							],
+							"variable": [
+								{
+									"key": "paymentId",
+									"value": "20526035-aca0-4e5f-9661-57aff7461603"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "60"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 21 Feb 2023 10:35:46 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"Completed\",\n    \"date\": \"02/21/2023 07:35:46\"\n}"
+				},
+				{
+					"name": "Processing",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://mockoon.tools.getontop.com:3000/api/v1/payments/:paymentId/status",
+							"protocol": "http",
+							"host": [
+								"mockoon",
+								"tools",
+								"getontop",
+								"com"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								":paymentId",
+								"status"
+							],
+							"variable": [
+								{
+									"key": "paymentId",
+									"value": "20526035-aca0-4e5f-9661-57aff7461603"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "61"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 21 Feb 2023 10:36:12 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"Processing\",\n    \"date\": \"02/21/2023 07:36:12\"\n}"
+				}
+			]
+		}
+	]
+}
